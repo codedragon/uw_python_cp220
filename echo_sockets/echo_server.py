@@ -53,11 +53,12 @@ def server(log_buffer=sys.stderr):
                     data = b''
                     done = False
                     while not done:
-                        msg_part = sock.recv(buffsize) # fixed type, dock
+                        msg_part = conn.recv(buffsize) # fixed typo, dock
                         if len(msg_part) < buffsize:
                             done = True
-                            sock.close()
+                            conn.close()
                         data += msg_part
+                        type(data)
                     print('received "{0}"'.format(data.decode('utf8')))
                     # TODO: Send the data you received back to the client, log
                     # the fact using the print statement here.  It will help in
