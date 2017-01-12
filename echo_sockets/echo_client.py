@@ -34,7 +34,7 @@ def client(msg, log_buffer=sys.stderr):
         chunk = ''
         done = False
         while not done:
-            received_message = dock.recv(buffsize)
+            received_message = sock.recv(buffsize) # fixed type, dock
             if len(received_message) < buffsize:
                 done = True
                 sock.close()

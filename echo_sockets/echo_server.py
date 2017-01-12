@@ -24,6 +24,7 @@ def server(log_buffer=sys.stderr):
     # TODO: bind your new sock 'sock' to the address above and begin to listen
     #       for incoming connections DONE
     sock.bind(address)
+    sock.listen(1) # moved from below per feedback
     try:
         # the outer loop controls the creation of new connection sockets. The
         # server will handle each incoming connection one at a time.
@@ -35,8 +36,7 @@ def server(log_buffer=sys.stderr):
             #       the client so we can report it below.  Replace the
             #       following line with your code. It is only here to prevent
             #       syntax errors DONE not sure if correct...
-            sock.listen(1)
-            conn = sock.accept()
+            conn, addr = sock.accept() # updated with variables per feedback
             try:
                 print('connection - {0}:{1}'.format(*addr), file=log_buffer)
 
@@ -53,7 +53,7 @@ def server(log_buffer=sys.stderr):
                     data = b''
                     done = False
                     while not done:
-                        msg_part = dock.recv(buffsize)
+                        msg_part = sock.recv(buffsize) # fixed type, dock
                         if len(msg_part) < buffsize:
                             done = True
                             sock.close()
