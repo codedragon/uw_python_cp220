@@ -6,8 +6,11 @@ def server(log_buffer=sys.stderr):
     # set an address for our server
     address = ('127.0.0.1', 10000)
     # TODO: Replace the following line with your code which will instantiate
-    #       a TCP socket with IPv4 Addressing, call the socket you make 'sock'
-    sock = None
+    #       a TCP socket with IPv4 Addressing, call the socket you make 'sock' DONE
+    sock = socket.socket(
+        socket.AF_INET,
+        socket.SOCK_STREAM,
+        socket.IPPROTO_IP)
     # TODO: You may find that if you repeatedly run the server script it fails,
     #       claiming that the port is already used.  You can set an option on
     #       your socket that will fix this problem. We DID NOT talk about this
@@ -19,8 +22,8 @@ def server(log_buffer=sys.stderr):
     print("making a server on {0}:{1}".format(*address), file=log_buffer)
 
     # TODO: bind your new sock 'sock' to the address above and begin to listen
-    #       for incoming connections
-
+    #       for incoming connections DONE
+    sock.bind(address)
     try:
         # the outer loop controls the creation of new connection sockets. The
         # server will handle each incoming connection one at a time.
@@ -31,8 +34,9 @@ def server(log_buffer=sys.stderr):
             #       at the same time you should be able to get the address of
             #       the client so we can report it below.  Replace the
             #       following line with your code. It is only here to prevent
-            #       syntax errors
-            addr = ('bar', 'baz')
+            #       syntax errors DONE not sure if correct...
+            sock.listen(1)
+            conn = sock.accept()
             try:
                 print('connection - {0}:{1}'.format(*addr), file=log_buffer)
 
@@ -44,12 +48,21 @@ def server(log_buffer=sys.stderr):
                     #       the data you receive as 'data'.  Replace the
                     #       following line with your code.  It's only here as
                     #       a placeholder to prevent an error in string
-                    #       formatting
+                    #       formatting DONE not sure if correct...
+                    buffsize = 16
                     data = b''
+                    done = False
+                    while not done:
+                        msg_part = dock.recv(buffsize)
+                        if len(msg_part) < buffsize:
+                            done = True
+                            sock.close()
+                        data += msg_part
                     print('received "{0}"'.format(data.decode('utf8')))
                     # TODO: Send the data you received back to the client, log
                     # the fact using the print statement here.  It will help in
-                    # debugging problems.
+                    # debugging problems. DONE
+                    conn.sendall(data)
                     print('sent "{0}"'.format(data.decode('utf8')))
                     # TODO: Check here to see if the message you've received is
                     # complete.  If it is, break out of this inner loop.
@@ -57,7 +70,8 @@ def server(log_buffer=sys.stderr):
             finally:
                 # TODO: When the inner loop exits, this 'finally' clause will
                 #       be hit. Use that opportunity to close the socket you
-                #       created above when a client connected.
+                #       created above when a client connected. DONE
+                sock.close()
                 print(
                     'echo complete, client connection closed', file=log_buffer
                 )
