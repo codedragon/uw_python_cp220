@@ -7,10 +7,7 @@ def server(log_buffer=sys.stderr):
     address = ('127.0.0.1', 10000)
     # TODO: Replace the following line with your code which will instantiate
     #       a TCP socket with IPv4 Addressing, call the socket you make 'sock'
-    sock = socket.socket(
-        socket.AF_INET,
-        socket.SOCK_STREAM,
-        socket.IPPROTO_TCP)
+    sock = None
     # TODO: You may find that if you repeatedly run the server script it fails,
     #       claiming that the port is already used.  You can set an option on
     #       your socket that will fix this problem. We DID NOT talk about this
@@ -23,7 +20,7 @@ def server(log_buffer=sys.stderr):
 
     # TODO: bind your new sock 'sock' to the address above and begin to listen
     #       for incoming connections
-    sock.bind(address)
+
     try:
         # the outer loop controls the creation of new connection sockets. The
         # server will handle each incoming connection one at a time.
@@ -35,8 +32,7 @@ def server(log_buffer=sys.stderr):
             #       the client so we can report it below.  Replace the
             #       following line with your code. It is only here to prevent
             #       syntax errors
-            sock.listen(1)
-            conn, address = sock.accept()
+            addr = ('bar', 'baz')
             try:
                 print('connection - {0}:{1}'.format(*addr), file=log_buffer)
 
@@ -49,7 +45,7 @@ def server(log_buffer=sys.stderr):
                     #       following line with your code.  It's only here as
                     #       a placeholder to prevent an error in string
                     #       formatting
-                    data = conn.recv(16)
+                    data = b''
                     print('received "{0}"'.format(data.decode('utf8')))
                     # TODO: Send the data you received back to the client, log
                     # the fact using the print statement here.  It will help in
