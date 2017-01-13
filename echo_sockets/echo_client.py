@@ -22,7 +22,9 @@ def client(msg, log_buffer=sys.stderr):
     try:
         print('sending "{0}"'.format(msg), file=log_buffer)
         # TODO: send your message to the server here. DONE but not sure if correct...
-        sock.sendall('This is a test message from the client.'.encode('utf8'))
+        # sock.sendall('This is a test message from the client.'.encode('utf8'))
+        msg = received_message.encode('utf8')
+        sock.sendall(msg)
         # TODO: the server should be sending you back your message as a series
         #       of 16-byte chunks. Accumulate the chunks you get to build the
         #       entire reply from the server. Make sure that you have received
@@ -31,20 +33,19 @@ def client(msg, log_buffer=sys.stderr):
         #       Log each chunk you receive.  Use the print statement below to
         #       do it. This will help in debugging problems DONE
         buffsize = 16
-        chunk = ''
+        chunk = b''
         done = False
         while not done:
-            received_message = sock.recv(buffsize) # fixed type, dock
-            if len(received_message) < buffsize:
+            msg_part = sock.recv(buffsize)
+            if len(msg_part) < buffsize:
                 done = True
-                sock.close()
-            chunk += received_message
+            chunk += msg_part
         print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
     finally:
         # TODO: after you break out of the loop receiving echoed chunks from
         #       the server you will want to close your client socket. DONE
-        print('closing socket', file=log_buffer)
         sock.close()
+        print('closing socket', file=log_buffer)
 
         # TODO: when all is said and done, you should return the entire reply
         # you received from the server as the return value of this function. DONE

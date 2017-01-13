@@ -53,12 +53,11 @@ def server(log_buffer=sys.stderr):
                     data = b''
                     done = False
                     while not done:
-                        msg_part = conn.recv(buffsize) # fixed typo, dock
+                        msg_part = conn.recv(buffsize)
                         if len(msg_part) < buffsize:
                             done = True
                             conn.close()
                         data += msg_part
-                        type(data)
                     print('received "{0}"'.format(data.decode('utf8')))
                     # TODO: Send the data you received back to the client, log
                     # the fact using the print statement here.  It will help in
@@ -72,7 +71,7 @@ def server(log_buffer=sys.stderr):
                 # TODO: When the inner loop exits, this 'finally' clause will
                 #       be hit. Use that opportunity to close the socket you
                 #       created above when a client connected. DONE
-                sock.close()
+                conn.close()
                 print(
                     'echo complete, client connection closed', file=log_buffer
                 )
@@ -81,8 +80,8 @@ def server(log_buffer=sys.stderr):
         # TODO: Use the python KeyboardInterrupt exception as a signal to
         #       close the server socket and exit from the server function.
         #       Replace the call to `pass` below, which is only there to
-        #       prevent syntax problems
-        pass
+        #       prevent syntax problems DONE
+        sock.close()
         print('quitting echo server', file=log_buffer)
 
 
